@@ -1,0 +1,16 @@
+/* Silence CSS unknown at-rules warnings */
+/* @tailwind base; */
+/* @tailwind components; */
+/* @tailwind utilities; */
+
+.tailwind-base {
+  @tailwind base;
+}
+
+.tailwind-components {
+  @tailwind components;
+}
+
+.tailwind-utilities {
+  @tailwind utilities;
+} 

@@ -1,74 +1,231 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { Bell, Plus, Search, ChevronRight } from 'lucide-react-native';
+import { Link } from 'expo-router';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+interface SaleItemProps {
+  title: string;
+  items: number;
+  amount: string;
+}
+
+const SaleItem = ({ title, items, amount }: SaleItemProps) => (
+  <Link href="/sales" asChild>
+    <TouchableOpacity style={styles.saleItem}>
+      <View>
+        <Text style={styles.saleItemTitle}>{title}</Text>
+        <Text style={styles.saleItemSubtitle}>{items} Items</Text>
+      </View>
+      <View style={styles.saleItemRight}>
+        <View>
+          <Text style={styles.saleItemCurrency}>KES</Text>
+          <Text style={styles.saleItemAmount}>{amount}</Text>
+        </View>
+        <ChevronRight size={20} color="#000" />
+      </View>
+    </TouchableOpacity>
+  </Link>
+);
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.logo}>ribaru</Text>
+        <TouchableOpacity>
+          <Bell size={24} color="#000" />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.searchContainer}>
+        <Search size={20} color="#666" style={styles.searchIcon} />
+        <TextInput
+          placeholder="Search stock..."
+          style={styles.searchInput}
+          placeholderTextColor="#666"
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      </View>
+
+      <View style={styles.statsRow}>
+        <View style={styles.statsCard}>
+          <Text style={styles.statsLabel}>TODAY'S SALES</Text>
+          <Text style={styles.statsAmount}>16,788</Text>
+          <Text style={styles.statsCurrency}>KES</Text>
+        </View>
+
+        <View style={styles.statsCard}>
+          <Text style={styles.statsLabel}>SALES THIS WEEK</Text>
+          <Text style={styles.statsAmount}>45,850</Text>
+          <Text style={styles.statsCurrency}>KES</Text>
+        </View>
+      </View>
+
+      <View style={styles.actionButtons}>
+        <Link href="/add-stock" asChild>
+          <TouchableOpacity style={styles.actionButton}>
+            <Plus size={20} color="#0029FF" />
+            <Text style={styles.actionButtonText}>Add Stock</Text>
+          </TouchableOpacity>
+        </Link>
+
+        <Link href="/search-barcode" asChild>
+          <TouchableOpacity style={styles.actionButton}>
+            <Search size={20} color="#0029FF" />
+            <Text style={styles.actionButtonText}>Search with Barcode</Text>
+          </TouchableOpacity>
+        </Link>
+      </View>
+
+      <Text style={styles.sectionTitle}>Recent Sales</Text>
+
+      <ScrollView style={styles.salesList} showsVerticalScrollIndicator={false}>
+        <SaleItem 
+          title="Indian style curry paste"
+          items={3}
+          amount="2,400.00"
+        />
+        <SaleItem
+          title="Granola"
+          items={8}
+          amount="8,500.00"
+        />
+        <SaleItem
+          title="Trail Mix"
+          items={8}
+          amount="1,800.00"
+        />
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F5FF',
+    padding: 16,
+    paddingTop: 60,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  logo: {
+    fontSize: 24,
+    fontFamily: 'AlbertSans-Medium',
+    color: '#0029FF',
+  },
+  searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 24,
   },
-  stepContainer: {
-    gap: 8,
+  searchIcon: {
+    marginRight: 12,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    fontFamily: 'AlbertSans-Regular',
+    color: '#000000',
+  },
+  statsRow: {
+    flexDirection: 'row',
+    gap: 16,
+    marginBottom: 24,
+  },
+  statsCard: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 16,
+  },
+  statsLabel: {
+    fontSize: 12,
+    fontFamily: 'AlbertSans-Medium',
+    color: '#666666',
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  statsAmount: {
+    fontSize: 28,
+    fontFamily: 'Recursive',
+    color: '#000000',
+    marginBottom: 4,
+  },
+  statsCurrency: {
+    fontSize: 12,
+    fontFamily: 'AlbertSans-Regular',
+    color: '#666666',
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    gap: 16,
+    marginBottom: 32,
+  },
+  actionButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 16,
+    gap: 8,
+  },
+  actionButtonText: {
+    fontSize: 14,
+    fontFamily: 'AlbertSans-Medium',
+    color: '#0029FF',
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontFamily: 'AlbertSans-Medium',
+    color: '#000000',
+    marginBottom: 16,
+  },
+  salesList: {
+    flex: 1,
+  },
+  saleItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+  },
+  saleItemTitle: {
+    fontSize: 16,
+    fontFamily: 'AlbertSans-Medium',
+    color: '#000000',
+    marginBottom: 4,
+  },
+  saleItemSubtitle: {
+    fontSize: 14,
+    fontFamily: 'AlbertSans-Regular',
+    color: '#666666',
+  },
+  saleItemRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  saleItemCurrency: {
+    fontSize: 12,
+    fontFamily: 'AlbertSans-Regular',
+    color: '#666666',
+    textAlign: 'right',
+  },
+  saleItemAmount: {
+    fontSize: 18,
+    fontFamily: 'Recursive',
+    color: '#000000',
+    textAlign: 'right',
   },
 });
