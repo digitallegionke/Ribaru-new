@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { Bell, Plus, Search, ChevronRight } from 'lucide-react-native';
 import { Link } from 'expo-router';
+import { Logo } from '../components/Logo';
 
 interface SaleItemProps {
   title: string;
@@ -31,7 +32,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.logo}>ribaru</Text>
+        <Logo />
         <TouchableOpacity>
           <Bell size={24} color="#000" />
         </TouchableOpacity>
@@ -111,11 +112,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 24,
-  },
-  logo: {
-    fontSize: 24,
-    fontFamily: 'AlbertSans-Medium',
-    color: '#0029FF',
   },
   searchContainer: {
     flexDirection: 'row',
